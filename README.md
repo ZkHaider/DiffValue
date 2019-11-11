@@ -20,7 +20,7 @@ $ github "ZkHaider/DiffValue" "master"
 ```
 
 ```shell 
-$ carthage update ReductionKit
+$ carthage update DiffValue
 ```
 
 ## Usage 
@@ -174,6 +174,23 @@ Chances are if the  `State` encapsulates a large set of properties it probably n
 A `@Diff` property wrapper exposes a `CurrentValueRelay<Root, Never>`. This is a `Publisher` with a private `CurrentValueSubject<Root, Never>` field. This is hidden so you cannot pass a `completion` event to the `Relay`. Use the `Relay` to subscribe your `State` to other `Subscribers`! Here is fully fledged example:
 
 ```swift 
+struct State {
+    let stringProperty: String
+    let intProperty: Int
+}
+
+final class ExampleClass {
+    
+    @Diff(\.stringProperty, \.intProperty)
+    var state1: State
+    
+    @Diff(\.intProperty)
+    var state2: State
+    
+    @Diff(\.stringProperty)
+    var state3: State
+}
+
 var modifiedState = State(stringProperty: "", intProperty: 0)
 
 /// Setup subscriptions
