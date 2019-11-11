@@ -2,8 +2,6 @@
     <img src="https://raw.githubusercontent.com/ZkHaider/DiffValue/master/.github/Assets/diffvalue_title.png" alt="DiffValue by ZkHaider" width="400" />
 </p>
 
-#
-
 [![Build Status](https://travis-ci.com/ZkHaider/DiffValue.svg?branch=master)](https://travis-ci.com/ZkHaider/DiffValue) ![Platforms](https://img.shields.io/badge/platform-iOS%20%7C%20MacOS%20%7C%20tvOS%20%7C%20watchOS-brightgreen) ![Swift Version](https://img.shields.io/badge/swift-5.1-blue)
 
 #
