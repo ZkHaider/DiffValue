@@ -14,10 +14,13 @@ DiffValue is a property observation tool that utilizes automatic diffing on prop
 
 DiffValue is available via Carthage, just add to your Cartfile like so:
 
-```shell
-$ github "ZkHaider/DiffValue" "master"
+`Cartfile`
+```
+# Property obsersation
+github "ZkHaider/DiffValue" "master"
 ```
 
+`Terminal`
 ```shell 
 $ carthage update DiffValue
 ```
