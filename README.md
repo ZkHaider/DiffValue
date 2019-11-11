@@ -102,6 +102,39 @@ final class ViewController: UIViewController {
 }
 ```
 
+If no `KeyPath<Root, Value>` are passed into the `@Diff` wrapper it will just do an equality check like normal based on `Equatable`:
+
+```swift 
+struct UserState {
+    let userName: String 
+    let email: String
+    let password: String
+}
+
+final class ViewController: UIViewController {
+
+    // MARK: - State
+    
+    @Diff()
+    var userState; UserState 
+    
+    // MARK: - Lifecycle 
+    
+    override func viewDidLoad() {
+        super.viewDidLoad() 
+        
+        // Start listening to state changes 
+        // This is only called when your specified key paths are updated
+        // Invoked via equatable if we detect any changes because 
+        // we did not pass in any keypaths
+        let subscription = $userState.sink { state in 
+            print("Listening to state changes: \(state)")
+        }
+    }
+
+}
+```
+
 `DiffValue` supports passing up to `10 KeyPath<Root, Value>` parameters in the initializer, if you require more you will have to pass an array of `DiffableKeyPath<Root>` types like:
 
 ```swift

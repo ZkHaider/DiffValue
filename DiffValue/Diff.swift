@@ -39,7 +39,7 @@ public struct Diff<Value: Equatable> {
                     
                     // If we've detected changes send an update
                     self.relay.send(newValue)
-                    return 
+                    return
             }
             
             // Diff here
