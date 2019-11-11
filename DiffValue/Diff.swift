@@ -24,6 +24,24 @@ public struct Diff<Value: Equatable> {
             return relay.value
         }
         set {
+            
+            // We check to see if diffableKeyPaths is empty
+            guard
+                !self.diffableKeyPaths.isEmpty
+                else {
+                    
+                    // If it is empty we want to just equate over the whole value
+                    guard
+                        self.relay.value != newValue
+                        else {
+                            return
+                    }
+                    
+                    // If we've detected changes send an update
+                    self.relay.send(newValue)
+                    return 
+            }
+            
             // Diff here
             guard
                 Diff.diff(
