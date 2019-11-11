@@ -11,15 +11,36 @@ import Combine
 
 /**
    From: https://github.com/dduan/Relay
+   Modified slightly.
 */
 
 /// A relay that wraps a single value and publishes a new element whenever the value changes.
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-public final class CurrentValueRelay<Output, Failure>: Relay where Failure: Error {
+@propertyWrapper public final class CurrentValueRelay<Output, Failure>: Relay where Failure: Error {
+    
+    /// Wrapped value
+    public typealias Value = Output
+    
+    /// The subject that is kept hidden
     private let subject: CurrentValueSubject<Output, Failure>
+    
     /// The value wrapped by this relay, published as a new element whenever it changes.
     public var value: Output {
         return self.subject.value
+    }
+    
+    /// Wrapped value which is property wrapper value
+    public var wrappedValue: Value {
+        get {
+            return value
+        }
+        set {
+            self.subject.value = newValue
+        }
+    }
+    
+    public var projectedValue: CurrentValueRelay<Output, Failure> {
+        return self
     }
 
     /// Creates a current value relay with the given initial value.
@@ -38,6 +59,10 @@ public final class CurrentValueRelay<Output, Failure>: Relay where Failure: Erro
     public func receive<S>(subscriber: S) where Output == S.Input, Failure == S.Failure, S : Subscriber {
         self.subject.receive(subscriber: subscriber)
     }
+    
+    public func projectedReceive<S>(subscriber: S) where Output == S.Input, Failure == S.Failure, S: Subscriber {
+        return receive(subscriber: subscriber)
+    }
 
     /// Sends a value to the subscriber.
     ///
@@ -45,4 +70,12 @@ public final class CurrentValueRelay<Output, Failure>: Relay where Failure: Erro
     final public func send(_ input: Output) {
         self.subject.send(input)
     }
+}
+
+extension CurrentValueRelay where Output: EquatableWithIdentity {
+    
+    public convenience init(with value: Output = Output.identity) {
+        self.init(value)
+    }
+    
 }
