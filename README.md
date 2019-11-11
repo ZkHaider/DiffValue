@@ -61,7 +61,36 @@ final class ViewController: UIViewController {
 }
 ```
 
-That's it! Use `KeyPath` to specify which properties you are interested in. `DiffValue` supports passing up to `10 KeyPath<Root, Value>` parameters in the initializer, if you require more you will have to pass an array of `DiffableKeyPath<Root>` types like:
+That's it! Use `KeyPath` to specify which properties you are interested in. You can optionally choose to conform to `EquatableWithIdentity`, however any value that you want to be utilized by `@Diff` needs to be `Equatable`. If you opt out of `EquatableWithIdentity` you will have to pass a default value in the property wrapper:
+
+```swift 
+struct UserState {
+    let userName: String 
+    let email: String
+    let password: String
+}
+
+final class ViewController: UIViewController {
+
+    // MARK: - State
+    
+    @Diff(
+        value: UserState(userName: "", email: "", password: ""),
+        \.userName, 
+        \.email
+    )
+    var userState; UserState 
+    
+    // MARK: - Lifecycle 
+    
+    override func viewDidLoad() {
+        super.viewDidLoad() 
+    }
+
+}
+```
+
+`DiffValue` supports passing up to `10 KeyPath<Root, Value>` parameters in the initializer, if you require more you will have to pass an array of `DiffableKeyPath<Root>` types like:
 
 ```swift
 struct MyVeryLargeState {
@@ -315,4 +344,4 @@ Print Output:
  */
 ```
 
-If you like the library please star!
+If you like the library please star it 🙂
