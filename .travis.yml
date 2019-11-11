@@ -1,1 +1,6 @@
-language: swift
+language:
+  - swift
+osx_image: xcode11.2
+script:
+  - xcodebuild -scheme DiffValue -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone X,OS=13.0' build test
+
