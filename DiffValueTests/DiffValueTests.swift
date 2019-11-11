@@ -10,15 +10,15 @@ import XCTest
 import Combine
 @testable import DiffValue
 
-struct State {
-    let stringProperty: String
-    let intProperty: Int
-}
-
 extension State: EquatableWithIdentity {
     static var identity: State {
         return State(stringProperty: "", intProperty: 0)
     }
+}
+
+struct State {
+    let stringProperty: String
+    let intProperty: Int
 }
 
 final class ExampleClass {

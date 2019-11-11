@@ -56,6 +56,12 @@ final class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad() 
+        
+        // Start listening to state changes 
+        // This is only called when your specified key paths are updated
+        let subscription = $userState.sink { state in 
+            print("Listening to state changes: \(state)")
+        }
     }
 
 }
@@ -85,6 +91,12 @@ final class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad() 
+        
+        // Start listening to state changes 
+        // This is only called when your specified key paths are updated
+        let subscription = $userState.sink { state in 
+            print("Listening to state changes: \(state)")
+        }
     }
 
 }
