@@ -10,7 +10,7 @@ import Foundation
 import Combine
 
 @propertyWrapper
-public struct Diff<Value: Equatable> {
+public class Diff<Value: Equatable> {
     
     // MARK: - Definitions
     
@@ -64,17 +64,21 @@ public struct Diff<Value: Equatable> {
     
     // MARK: - Attributes
     
-    private let relay: Relay
+    public let relay: Relay
     
     // MARK: - Projected Value
     
-    public var projectedValue: Relay {
-        return self.relay
+    public var projectedValue: Diff<DiffValue> {
+        return self
     }
     
     // MARK: - KeyPaths
     
     let diffableKeyPaths: Set<DiffableKeyPath<Value>>
+    
+    // MARK: - Property Relays
+    
+    internal var cancellables: [AnyCancellable] = []
     
     // MARK: - Initializers
     
@@ -344,114 +348,110 @@ extension Diff where Value: EquatableWithIdentity {
     
     // MARK: - Convenience Initializers
     
-    public init(value: Value = .identity)
+    public convenience init(defaultValue: Value = .identity)
     {
-        self.relay = CurrentValueRelay(value)
-        self.diffableKeyPaths = Set()
+        self.init(value: defaultValue)
     }
     
-    public init(value: Value = .identity, keyPaths: DiffableKeyPath<Value>...)
+    public convenience init(defaultValue: Value = .identity, keyPaths: DiffableKeyPath<Value>...)
     {
-        self.relay = CurrentValueRelay(value)
-        self.diffableKeyPaths = Set(keyPaths)
+        self.init(value: defaultValue, keyPaths: keyPaths)
     }
     
-    public init(value: Value = .identity, keyPaths: [DiffableKeyPath<Value>])
+    public convenience init(defaultValue: Value = .identity, keyPaths: [DiffableKeyPath<Value>])
     {
-        self.relay = CurrentValueRelay(value)
-        self.diffableKeyPaths = Set(keyPaths)
+        self.init(value: defaultValue, keyPaths: keyPaths)
     }
     
-    public init<Property1: Equatable>(
-        value: Value = .identity,
+    public convenience init<Property1: Equatable>(
+        defaultValue: Value = .identity,
         _ keyPath1: KeyPath<Value, Property1>)
     {
-        self.relay = CurrentValueRelay(value)
-        self.diffableKeyPaths = Set(arrayLiteral: keyPath1.diffable)
+        self.init(value: defaultValue, keyPath1)
     }
     
-    public init<
+    public convenience init<
         Property1: Equatable,
         Property2: Equatable>(
-        value: Value = .identity,
+        defaultValue: Value = .identity,
         _ keyPath1: KeyPath<Value, Property1>,
         _ keyPath2: KeyPath<Value, Property2>)
     {
-        self.relay = CurrentValueRelay(value)
-        self.diffableKeyPaths = Set(arrayLiteral:
-            keyPath1.diffable,
-            keyPath2.diffable
+        self.init(
+            value: defaultValue,
+            keyPath1,
+            keyPath2
         )
     }
     
-    public init<
+    public convenience init<
         Property1: Equatable,
         Property2: Equatable,
         Property3: Equatable>(
-        value: Value = .identity,
+        defaultValue: Value = .identity,
         _ keyPath1: KeyPath<Value, Property1>,
         _ keyPath2: KeyPath<Value, Property2>,
         _ keyPath3: KeyPath<Value, Property3>)
     {
-        self.relay = CurrentValueRelay(value)
-        self.diffableKeyPaths = Set(arrayLiteral:
-            keyPath1.diffable,
-            keyPath2.diffable,
-            keyPath3.diffable
+        self.init(
+            value: defaultValue,
+            keyPath1,
+            keyPath2,
+            keyPath3
         )
     }
     
-    public init<
+    public convenience init<
         Property1: Equatable,
         Property2: Equatable,
         Property3: Equatable,
         Property4: Equatable>(
-        value: Value = .identity,
+        defaultValue: Value = .identity,
         _ keyPath1: KeyPath<Value, Property1>,
         _ keyPath2: KeyPath<Value, Property2>,
         _ keyPath3: KeyPath<Value, Property3>,
         _ keyPath4: KeyPath<Value, Property4>)
     {
-        self.relay = CurrentValueRelay(value)
-        self.diffableKeyPaths = Set(arrayLiteral:
-            keyPath1.diffable,
-            keyPath2.diffable,
-            keyPath3.diffable,
-            keyPath4.diffable
+        self.init(
+            value: defaultValue,
+            keyPath1,
+            keyPath2,
+            keyPath3,
+            keyPath4
         )
     }
     
-    public init<
+    public convenience init<
         Property1: Equatable,
         Property2: Equatable,
         Property3: Equatable,
         Property4: Equatable,
         Property5: Equatable>(
-        value: Value = .identity,
+        defaultValue: Value = .identity,
         _ keyPath1: KeyPath<Value, Property1>,
         _ keyPath2: KeyPath<Value, Property2>,
         _ keyPath3: KeyPath<Value, Property3>,
         _ keyPath4: KeyPath<Value, Property4>,
         _ keyPath5: KeyPath<Value, Property5>)
     {
-        self.relay = CurrentValueRelay(value)
-        self.diffableKeyPaths = Set(arrayLiteral:
-            keyPath1.diffable,
-            keyPath2.diffable,
-            keyPath3.diffable,
-            keyPath4.diffable,
-            keyPath5.diffable
+        self.init(
+            value: defaultValue,
+            keyPath1,
+            keyPath2,
+            keyPath3,
+            keyPath4,
+            keyPath5
         )
     }
     
-    public init<
+    public convenience init<
         Property1: Equatable,
         Property2: Equatable,
         Property3: Equatable,
         Property4: Equatable,
         Property5: Equatable,
         Property6: Equatable>(
-        value: Value = .identity,
+        defaultValue: Value = .identity,
         _ keyPath1: KeyPath<Value, Property1>,
         _ keyPath2: KeyPath<Value, Property2>,
         _ keyPath3: KeyPath<Value, Property3>,
@@ -459,18 +459,18 @@ extension Diff where Value: EquatableWithIdentity {
         _ keyPath5: KeyPath<Value, Property5>,
         _ keyPath6: KeyPath<Value, Property6>)
     {
-        self.relay = CurrentValueRelay(value)
-        self.diffableKeyPaths = Set(arrayLiteral:
-            keyPath1.diffable,
-            keyPath2.diffable,
-            keyPath3.diffable,
-            keyPath4.diffable,
-            keyPath5.diffable,
-            keyPath6.diffable
+        self.init(
+            value: defaultValue,
+            keyPath1,
+            keyPath2,
+            keyPath3,
+            keyPath4,
+            keyPath5,
+            keyPath6
         )
     }
     
-    public init<
+    public convenience init<
         Property1: Equatable,
         Property2: Equatable,
         Property3: Equatable,
@@ -478,7 +478,7 @@ extension Diff where Value: EquatableWithIdentity {
         Property5: Equatable,
         Property6: Equatable,
         Property7: Equatable>(
-        value: Value = .identity,
+        defaultValue: Value = .identity,
         _ keyPath1: KeyPath<Value, Property1>,
         _ keyPath2: KeyPath<Value, Property2>,
         _ keyPath3: KeyPath<Value, Property3>,
@@ -487,19 +487,19 @@ extension Diff where Value: EquatableWithIdentity {
         _ keyPath6: KeyPath<Value, Property6>,
         _ keyPath7: KeyPath<Value, Property7>)
     {
-        self.relay = CurrentValueRelay(value)
-        self.diffableKeyPaths = Set(arrayLiteral:
-            keyPath1.diffable,
-            keyPath2.diffable,
-            keyPath3.diffable,
-            keyPath4.diffable,
-            keyPath5.diffable,
-            keyPath6.diffable,
-            keyPath7.diffable
+        self.init(
+            value: defaultValue,
+            keyPath1,
+            keyPath2,
+            keyPath3,
+            keyPath4,
+            keyPath5,
+            keyPath6,
+            keyPath7
         )
     }
     
-    public init<
+    public convenience init<
         Property1: Equatable,
         Property2: Equatable,
         Property3: Equatable,
@@ -508,7 +508,7 @@ extension Diff where Value: EquatableWithIdentity {
         Property6: Equatable,
         Property7: Equatable,
         Property8: Equatable>(
-        value: Value = .identity,
+        defaultValue: Value = .identity,
         _ keyPath1: KeyPath<Value, Property1>,
         _ keyPath2: KeyPath<Value, Property2>,
         _ keyPath3: KeyPath<Value, Property3>,
@@ -518,20 +518,20 @@ extension Diff where Value: EquatableWithIdentity {
         _ keyPath7: KeyPath<Value, Property7>,
         _ keyPath8: KeyPath<Value, Property8>)
     {
-        self.relay = CurrentValueRelay(value)
-        self.diffableKeyPaths = Set(arrayLiteral:
-            keyPath1.diffable,
-            keyPath2.diffable,
-            keyPath3.diffable,
-            keyPath4.diffable,
-            keyPath5.diffable,
-            keyPath6.diffable,
-            keyPath7.diffable,
-            keyPath8.diffable
+        self.init(
+            value: defaultValue,
+            keyPath1,
+            keyPath2,
+            keyPath3,
+            keyPath4,
+            keyPath5,
+            keyPath6,
+            keyPath7,
+            keyPath8
         )
     }
     
-    public init<
+    public convenience init<
         Property1: Equatable,
         Property2: Equatable,
         Property3: Equatable,
@@ -541,7 +541,7 @@ extension Diff where Value: EquatableWithIdentity {
         Property7: Equatable,
         Property8: Equatable,
         Property9: Equatable>(
-        value: Value = .identity,
+        defaultValue: Value = .identity,
         _ keyPath1: KeyPath<Value, Property1>,
         _ keyPath2: KeyPath<Value, Property2>,
         _ keyPath3: KeyPath<Value, Property3>,
@@ -552,21 +552,21 @@ extension Diff where Value: EquatableWithIdentity {
         _ keyPath8: KeyPath<Value, Property8>,
         _ keyPath9: KeyPath<Value, Property9>)
     {
-        self.relay = CurrentValueRelay(value)
-        self.diffableKeyPaths = Set(arrayLiteral:
-            keyPath1.diffable,
-            keyPath2.diffable,
-            keyPath3.diffable,
-            keyPath4.diffable,
-            keyPath5.diffable,
-            keyPath6.diffable,
-            keyPath7.diffable,
-            keyPath8.diffable,
-            keyPath9.diffable
+        self.init(
+            value: defaultValue,
+            keyPath1,
+            keyPath2,
+            keyPath3,
+            keyPath4,
+            keyPath5,
+            keyPath6,
+            keyPath7,
+            keyPath8,
+            keyPath9
         )
     }
     
-    public init<
+    public convenience init<
         Property1: Equatable,
         Property2: Equatable,
         Property3: Equatable,
@@ -577,7 +577,7 @@ extension Diff where Value: EquatableWithIdentity {
         Property8: Equatable,
         Property9: Equatable,
         Property10: Equatable>(
-        value: Value = .identity,
+        defaultValue: Value = .identity,
         _ keyPath1: KeyPath<Value, Property1>,
         _ keyPath2: KeyPath<Value, Property2>,
         _ keyPath3: KeyPath<Value, Property3>,
@@ -589,18 +589,18 @@ extension Diff where Value: EquatableWithIdentity {
         _ keyPath9: KeyPath<Value, Property9>,
         _ keyPath10: KeyPath<Value, Property10>)
     {
-        self.relay = CurrentValueRelay(value)
-        self.diffableKeyPaths = Set(arrayLiteral:
-            keyPath1.diffable,
-            keyPath2.diffable,
-            keyPath3.diffable,
-            keyPath4.diffable,
-            keyPath5.diffable,
-            keyPath6.diffable,
-            keyPath7.diffable,
-            keyPath8.diffable,
-            keyPath9.diffable,
-            keyPath10.diffable
+        self.init(
+            value: defaultValue,
+            keyPath1,
+            keyPath2,
+            keyPath3,
+            keyPath4,
+            keyPath5,
+            keyPath6,
+            keyPath7,
+            keyPath8,
+            keyPath9,
+            keyPath10
         )
     }
     

@@ -206,7 +206,47 @@ final class ViewController: UIViewController {
 
 Chances are if the  `State` encapsulates a large set of properties it probably needs to be divided up -- always keep your `State` lightweight! However this library does support as many `KeyPath<Root, Value>`s as you wish to diff on!
 
-A `@Diff` property wrapper exposes a `CurrentValueRelay<Root, Never>`. This is a `Publisher` with a private `CurrentValueSubject<Root, Never>` field. This is hidden so you cannot pass a `completion` event to the `Relay`. Use the `Relay` to subscribe your `State` to other `Subscribers`! Here is fully fledged example:
+A `@Diff` property wrapper exposes a `CurrentValueRelay<Root, Never>`. This is a `Publisher` with a private `CurrentValueSubject<Root, Never>` field. This is hidden so you cannot pass a `completion` event to the `Relay`. Use the `Relay` to subscribe your `State` to other `Subscribers`! 
+
+## Property Observation 
+
+You can also observe single properties directly without having to observe entire value changes:
+
+```swift
+struct State {
+    let stringProperty: String
+    let intProperty: Int
+}
+
+final class ExampleClass {
+
+    @Diff(\.stringProperty)
+    var state: State
+
+}
+
+final class TestClass {
+
+    let exampleClass: ExampleClass = ExampleClass()
+
+    init() {
+        exampleClass.$state.add( 
+            \.stringProperty,
+            target: self,
+            hook: .method(TestClass.observeString)
+        )
+    }
+
+    private func observeString(_ stringValue: String) {
+        print("📝 Property Changed: \(stringValue)")
+    }
+
+}
+```
+
+#
+
+Here is fully fledged example:
 
 ```swift 
 struct State {
@@ -406,6 +446,6 @@ Print Output:
  DiffStateReplay3: receive value: (State(stringProperty: "Hello world", intProperty: 10))
  
  */
-```
+``` 
 
 If you like the library please star it 🙂
