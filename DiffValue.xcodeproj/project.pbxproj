@@ -21,7 +21,7 @@
 		C471A01923795E8900F72EDA /* Single.Replay.swift in Sources */ = {isa = PBXBuildFile; fileRef = C471A01823795E8900F72EDA /* Single.Replay.swift */; };
 		C4CE829C23A9F29900A3D980 /* Property.Relay.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CE829B23A9F29900A3D980 /* Property.Relay.swift */; };
 		C4CE829E23A9F82E00A3D980 /* Property.Hook.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CE829D23A9F82E00A3D980 /* Property.Hook.swift */; };
-		C4CE82A023A9F96200A3D980 /* Subscriber.Hook.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CE829F23A9F96200A3D980 /* Subscriber.Hook.swift */; };
+		C4CE82A023A9F96200A3D980 /* Subscriber.PropertyHook.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CE829F23A9F96200A3D980 /* Subscriber.PropertyHook.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,7 +53,7 @@
 		C471A01A2379641900F72EDA /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		C4CE829B23A9F29900A3D980 /* Property.Relay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Property.Relay.swift; sourceTree = "<group>"; };
 		C4CE829D23A9F82E00A3D980 /* Property.Hook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Property.Hook.swift; sourceTree = "<group>"; };
-		C4CE829F23A9F96200A3D980 /* Subscriber.Hook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subscriber.Hook.swift; sourceTree = "<group>"; };
+		C4CE829F23A9F96200A3D980 /* Subscriber.PropertyHook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subscriber.PropertyHook.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,7 +143,7 @@
 			children = (
 				C4CE829B23A9F29900A3D980 /* Property.Relay.swift */,
 				C4CE829D23A9F82E00A3D980 /* Property.Hook.swift */,
-				C4CE829F23A9F96200A3D980 /* Subscriber.Hook.swift */,
+				C4CE829F23A9F96200A3D980 /* Subscriber.PropertyHook.swift */,
 			);
 			path = Property;
 			sourceTree = "<group>";
@@ -266,7 +266,7 @@
 				C471A01523795E5F00F72EDA /* Single.Replay.Subscription.swift in Sources */,
 				C471A01923795E8900F72EDA /* Single.Replay.swift in Sources */,
 				C471A0082379506600F72EDA /* Relay.swift in Sources */,
-				C4CE82A023A9F96200A3D980 /* Subscriber.Hook.swift in Sources */,
+				C4CE82A023A9F96200A3D980 /* Subscriber.PropertyHook.swift in Sources */,
 				C471A0062379435000F72EDA /* Comparing.swift in Sources */,
 				C4CE829E23A9F82E00A3D980 /* Property.Hook.swift in Sources */,
 				C471A00B2379509100F72EDA /* CurrentValue.Relay.swift in Sources */,
