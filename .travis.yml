@@ -1,3 +1,5 @@
 language:
   - swift
 osx_image: xcode11.2
+xcode_project: DiffValue.xcodeproj # path to your xcodeproj folder
+xcode_scheme: DiffValue
