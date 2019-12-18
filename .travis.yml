@@ -1,6 +1,3 @@
 language:
   - swift
 osx_image: xcode11.2
-xcode_project: DiffValue.xcodeproj # path to your xcodeproj folder
-xcode_scheme: DiffValueTests
-xcode_destination: platform=iOS Simulator,OS=11.2,name=iPhone X
