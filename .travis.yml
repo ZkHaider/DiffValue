@@ -1,6 +1,5 @@
 language:
   - swift
 osx_image: xcode11.2
-script:
-  - xcodebuild -scheme DiffValue -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 11 Pro Max,OS=13.2' build test
-
+xcode_project: DiffValue.xcodeproj # path to your xcodeproj folder
+xcode_scheme: DiffValue
