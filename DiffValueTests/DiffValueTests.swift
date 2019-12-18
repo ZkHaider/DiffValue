@@ -47,6 +47,10 @@ class DiffValueTests: XCTestCase {
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
+    
+    private func handleStringProperty(_ string: String) {
+        print("Hook Method Hit: \(string)")
+    }
 
     func testDiffState() {
         
@@ -56,6 +60,14 @@ class DiffValueTests: XCTestCase {
         
         // State 1
         
+        
+        subscriptions.append(
+            exampleClass.$state1.add(
+                \.stringProperty,
+                target: self,
+                hook: .method(DiffValueTests.handleStringProperty)
+            )
+        )
         let relay1 = exampleClass.$state1
         let replay1 = relay1
             .print("DiffStateReplay1")
