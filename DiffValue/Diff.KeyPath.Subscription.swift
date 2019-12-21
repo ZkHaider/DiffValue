@@ -15,15 +15,28 @@ extension Diff {
         Property>(
         _ keyPath: KeyPath<DiffValue, Property>,
         target: Target,
-        hook: Hook<Target, Property>)
+        hook: Hook<Target, Property>,
+        on queue: DispatchQueue? = nil)
     {
-        self.cancellables.append(
-            self.relay.add(
-                keyPath,
-                target: target,
-                hook: hook
+        if let queue = queue {
+            self.cancellables.append(
+                self.relay
+                    .receive(on: queue)
+                    .add(
+                        keyPath,
+                        target: target,
+                        hook: hook
+                    )
             )
-        )
+        } else {
+            self.cancellables.append(
+                self.relay.add(
+                    keyPath,
+                    target: target,
+                    hook: hook
+                )
+            )
+        }
     }
     
 }
